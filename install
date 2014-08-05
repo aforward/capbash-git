@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#-----------
+# Configurations
+#-----------
+
+GIT_BASE_DIR=${GIT_HOME-/var/apps}
+GIT_REPO_NAME=${GIT_PROJECT_NAME-samplephp}
+GIT_URL=${GIT_URL-https://github.com/aforward/samplephp}
+GIT_REMOTE=${PHPAPP_REMOTE-origin}
+GIT_BRANCH=${PHPAPP_BRANCH-master}
+
+#-----------
+# Install Script
+#-----------
+
+if [[ "`which git`" == "" ]]; then
+  apt-get install git-core
+fi
+
+if [[ ! -e ${GIT_BASE_DIR}/${GIT_REPO_NAME} ]]; then
+  (cd ${GIT_BASE_DIR} && git clone ${GIT_URL} ${GIT_REPO_NAME})
+else
+  (cd ${GIT_BASE_DIR}/${GIT_REPO_NAME} && git checkout ${GIT_BRANCH} && git fetch && git reset --hard ${GIT_REMOTE}/${GIT_BRANCH})
+fi
+
+
