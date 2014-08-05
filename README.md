@@ -25,7 +25,11 @@ Now you can install git into your project
 The available configurations include:
 
 ```
-TBD
+GIT_BASE_DIR=${GIT_HOME-/var/apps}
+GIT_REPO_NAME=${GIT_PROJECT_NAME-samplephp}
+GIT_URL=${GIT_URL-https://github.com/aforward/samplephp}
+GIT_REMOTE=${PHPAPP_REMOTE-origin}
+GIT_BRANCH=${PHPAPP_BRANCH-master}
 ```
 
 
