@@ -3,4 +3,4 @@ mkdir -p ./nodes
 cp ./submodules/git/files/git_node ./nodes/git
 chmod 755 ./nodes/git
 
-./capbash install deploykeys
+capbash install deploykeys

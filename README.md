@@ -9,15 +9,15 @@ Install capbash first, more details at:
 https://github.com/aforward/capbash
 
 ```
-git clone https://github.com/aforward/capbash YOUR_REPO_ROOT
+curl -s https://raw.githubusercontent.com/aforward/capbash/master/capbash-installer | bash
+capbash new YOUR_REPO_ROOT
 cd YOUR_REPO_ROOT
-./bootstrap
 ```
 
 Now you can install git into your project
 
 ```
-./capbash install git
+capbash install git
 ```
 
 # Configurations #
@@ -38,11 +38,11 @@ GIT_BRANCH=${PHPAPP_BRANCH-master}
 To push the git script to your server, all you need if the IP or hostname of your server (e.g. 192.167.0.48) and your root password.
 
 ```
-./capbash deploy <IP> git
+capbash deploy <IP> git
 ```
 
 For example,
 
 ```
-./capbash deploy 127.0.0.1 git
+capbash deploy 127.0.0.1 git
 ```
