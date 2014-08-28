@@ -1,3 +1,6 @@
 #!/bin/bash
 ./submodules/deploykeys/install
-./submodules/git/install
+
+GIT_REPO_NAME=samplephp \
+  GIT_URL=https://github.com/aforward/samplephp \
+  ./submodules/git/install
