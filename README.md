@@ -25,7 +25,7 @@ capbash install git
 The available configurations include:
 
 ```
-GIT_BASE_DIR=${GIT_HOME-/var/apps}
+GIT_APPS_DIR=${GIT_HOME-/var/local/apps}
 GIT_REPO_NAME=${GIT_PROJECT_NAME-samplephp}
 GIT_URL=${GIT_URL-https://github.com/aforward/samplephp}
 GIT_REMOTE=${PHPAPP_REMOTE-origin}
