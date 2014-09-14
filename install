@@ -12,6 +12,9 @@ GIT_BRANCH=${GIT_BRANCH-master}
 GIT_FORCE=${GIT_BRANCH-false}
 GIT_OWNER=${GIT_OWNER-root}
 
+GIT_EMAIL=${GIT_EMAIL-server@localhost}
+GIT_NAME=${GIT_NAME-server}
+
 GIT_REPO_DIR=${GIT_APPS_DIR}/${GIT_REPO_NAME}
 
 #-----------
@@ -20,6 +23,11 @@ GIT_REPO_DIR=${GIT_APPS_DIR}/${GIT_REPO_NAME}
 
 if [[ "`which git`" == "" ]]; then
   apt-get install -y git-core
+fi
+
+if [[ "`git config --global user.email`" == "" ]]; then
+  git config --global user.email "$GIT_EMAIL"
+  git config --global user.name "$GIT_NAME"
 fi
 
 su $GIT_OWNER -c "mkdir -p $GIT_APPS_DIR"
