@@ -9,7 +9,7 @@ GIT_REPO_NAME=${GIT_REPO_NAME-samplephp}
 GIT_URL=${GIT_URL-https://github.com/aforward/samplephp}
 GIT_REMOTE=${GIT_REMOTE-origin}
 GIT_BRANCH=${GIT_BRANCH-master}
-GIT_FORCE=${GIT_BRANCH-false}
+GIT_FORCE=${GIT_FORCE-false}
 GIT_OWNER=${GIT_OWNER-root}
 
 GIT_EMAIL=${GIT_EMAIL-server@localhost}
@@ -21,8 +21,13 @@ GIT_REPO_DIR=${GIT_APPS_DIR}/${GIT_REPO_NAME}
 # Install Script
 #-----------
 
-if [[ "`which git`" == "" ]]; then
-  apt-get install -y git-core
+if [[ "`which git 2> /dev/null`" == "" ]]; then
+  echo "  -- Installing git"
+  if [[ "$OS" == "redhat" ]]; then
+    yum install -y git-core
+  else
+    apt-get install -y git-core
+  fi
 fi
 
 if [[ "`git config --global user.email`" == "" ]]; then
