@@ -18,6 +18,8 @@ GIT_NAME=${GIT_NAME-server}
 
 GIT_REPO_DIR=${GIT_APPS_DIR}/${GIT_REPO_NAME}
 
+DEBUG=${DEBUG-false}
+
 #-----------
 # Install Script
 #-----------
@@ -51,7 +53,7 @@ elif [[ "$GIT_FORCE" = true ]]; then
 
 # BEST EFFORT to update to the latest of the branch
 elif [[ "$GIT_TAG" == "$GIT_BRANCH" ]]; then
-  echo " -- Checking out ${GIT_REPO_DIR} (${GIT_BRANCH})"
+  echo "  -- Checking out ${GIT_REPO_DIR} (${GIT_BRANCH})"
   su $GIT_OWNER -c "(cd ${GIT_REPO_DIR} && git checkout . && git checkout ${GIT_BRANCH} && git pull ${GIT_REMOTE} ${GIT_BRANCH})"
 
 # ALEADY ON TAG, NOTHING TO DO
@@ -59,7 +61,7 @@ elif [[ "`cd ${GIT_REPO_DIR} && git name-rev --tags --name-only $(git rev-parse 
   echo "  -- Already on ${GIT_REPO_DIR} (${GIT_TAG})"
 
 else
-  echo " -- Updating ${GIT_REPO_DIR} (${GIT_TAG})"
+  echo "  -- Updating ${GIT_REPO_DIR} (${GIT_TAG})"
   su $GIT_OWNER -c "(cd ${GIT_REPO_DIR} && git checkout . && git fetch && git checkout ${GIT_TAG})"
 fi
 
