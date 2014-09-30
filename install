@@ -24,48 +24,49 @@ DEBUG=${DEBUG-false}
 # Install Script
 #-----------
 
-exec 6>/dev/null
-if [[ "$DEBUG" == true ]]; then
-  exec 6>&1
+if [[ "$DEBUG" == true ]] ; then
+  exec 3>&1
+else
+  exec 3>&1 &>/dev/null
 fi
 
 if [[ "`which git 2> /dev/null`" == "" ]]; then
-  echo "  -- Installing git"
+  echo "  -- Installing git" >&3
   if [[ "$OS" == "redhat" ]]; then
-    yum install -y git-core >6 2>&1
+    yum install -y git-core
   else
-    apt-get install -y git-core >6 2>&1
+    apt-get install -y git-core
   fi
 fi
 
 if [[ "`git config --global user.email`" == "" ]]; then
-  git config --global user.email "$GIT_EMAIL" >6 2>&1
-  git config --global user.name "$GIT_NAME" >6 2>&1
+  git config --global user.email "$GIT_EMAIL"
+  git config --global user.name "$GIT_NAME"
 fi
 
 su $GIT_OWNER -c "mkdir -p $GIT_APPS_DIR"
 
 # NEW repository, so clone it
 if [[ ! -e ${GIT_REPO_DIR} ]]; then
-  echo "  -- Creating a new REPO ${GIT_REPO_DIR} (${GIT_BRANCH})..."
-  su $GIT_OWNER -c "(cd ${GIT_APPS_DIR} && git clone ${GIT_URL} ${GIT_REPO_NAME} && cd ${GIT_REPO_NAME} && git checkout ${GIT_TAG})" >6 2>&1
+  echo "  -- Creating a new REPO ${GIT_REPO_DIR} (${GIT_BRANCH})..." >&3
+  su $GIT_OWNER -c "(cd ${GIT_APPS_DIR} && git clone ${GIT_URL} ${GIT_REPO_NAME} && cd ${GIT_REPO_NAME} && git checkout ${GIT_TAG})"
 
 # FORCE an update, this will force Docker to skip the cache (not necessarily a good thing)
 elif [[ "$GIT_FORCE" = true ]]; then
-  echo "  -- Forcing a reset to ${GIT_REPO_DIR} (${GIT_BRANCH})"
-  su $GIT_OWNER -c "(cd ${GIT_REPO_DIR} && git checkout ${GIT_BRANCH} && git fetch && git reset --hard ${GIT_REMOTE}/${GIT_BRANCH} && git checkout ${GIT_TAG})" >6 2>&1
+  echo "  -- Forcing a reset to ${GIT_REPO_DIR} (${GIT_BRANCH})" >&3
+  su $GIT_OWNER -c "(cd ${GIT_REPO_DIR} && git checkout ${GIT_BRANCH} && git fetch && git reset --hard ${GIT_REMOTE}/${GIT_BRANCH} && git checkout ${GIT_TAG})"
 
 # BEST EFFORT to update to the latest of the branch
 elif [[ "$GIT_TAG" == "$GIT_BRANCH" ]]; then
-  echo "  -- Checking out ${GIT_REPO_DIR} (${GIT_BRANCH})"
-  su $GIT_OWNER -c "(cd ${GIT_REPO_DIR} && git checkout . && git checkout ${GIT_BRANCH} && git pull ${GIT_REMOTE} ${GIT_BRANCH})" >6 2>&1
+  echo "  -- Checking out ${GIT_REPO_DIR} (${GIT_BRANCH})" >&3
+  su $GIT_OWNER -c "(cd ${GIT_REPO_DIR} && git checkout . && git checkout ${GIT_BRANCH} && git pull ${GIT_REMOTE} ${GIT_BRANCH})"
 
 # ALEADY ON TAG, NOTHING TO DO
 elif [[ "`cd ${GIT_REPO_DIR} && git name-rev --tags --name-only $(git rev-parse HEAD)`" == "$GIT_TAG" ]]; then
-  echo "  -- Already on ${GIT_REPO_DIR} (${GIT_TAG})"
+  echo "  -- Already on ${GIT_REPO_DIR} (${GIT_TAG})" >&3
 
 else
-  echo "  -- Updating ${GIT_REPO_DIR} (${GIT_TAG})"
-  su $GIT_OWNER -c "(cd ${GIT_REPO_DIR} && git checkout . && git fetch && git checkout ${GIT_TAG})" >6 2>&1
+  echo "  -- Updating ${GIT_REPO_DIR} (${GIT_TAG})" >&3
+  su $GIT_OWNER -c "(cd ${GIT_REPO_DIR} && git checkout . && git fetch && git checkout ${GIT_TAG})"
 fi
 
