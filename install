@@ -24,14 +24,8 @@ DEBUG=${DEBUG-false}
 # Install Script
 #-----------
 
-if [[ "$DEBUG" == true ]] ; then
-  exec 3>&1
-else
-  exec 3>&1 &>/dev/null
-fi
-
 if [[ "`which git 2> /dev/null`" == "" ]]; then
-  echo "  -- Installing git" >&3
+  echo "  -- Installing git"
   if [[ "$OS" == "redhat" ]] || [[ "$OS" == "centos" ]]; then
     yum install -y git-core
   else
@@ -48,25 +42,25 @@ su $GIT_OWNER -c "mkdir -p $GIT_APPS_DIR"
 
 # NEW repository, so clone it
 if [[ ! -e ${GIT_REPO_DIR} ]]; then
-  echo "  -- Creating a new REPO ${GIT_REPO_DIR} (${GIT_BRANCH})..." >&3
+  echo "  -- Creating a new REPO ${GIT_REPO_DIR} (${GIT_BRANCH})..."
   su $GIT_OWNER -c "(cd ${GIT_APPS_DIR} && git clone ${GIT_URL} ${GIT_REPO_NAME} && cd ${GIT_REPO_NAME} && git checkout ${GIT_TAG})"
 
 # FORCE an update, this will force Docker to skip the cache (not necessarily a good thing)
 elif [[ "$GIT_FORCE" = true ]]; then
-  echo "  -- Forcing a reset to ${GIT_REPO_DIR} (${GIT_BRANCH})" >&3
+  echo "  -- Forcing a reset to ${GIT_REPO_DIR} (${GIT_BRANCH})"
   su $GIT_OWNER -c "(cd ${GIT_REPO_DIR} && git checkout ${GIT_BRANCH} && git fetch && git reset --hard ${GIT_REMOTE}/${GIT_BRANCH} && git checkout ${GIT_TAG})"
 
 # BEST EFFORT to update to the latest of the branch
 elif [[ "$GIT_TAG" == "$GIT_BRANCH" ]]; then
-  echo "  -- Checking out ${GIT_REPO_DIR} (${GIT_BRANCH})" >&3
+  echo "  -- Checking out ${GIT_REPO_DIR} (${GIT_BRANCH})"
   su $GIT_OWNER -c "(cd ${GIT_REPO_DIR} && git checkout . && git checkout ${GIT_BRANCH} && git pull ${GIT_REMOTE} ${GIT_BRANCH})"
 
 # ALEADY ON TAG, NOTHING TO DO
 elif [[ "`cd ${GIT_REPO_DIR} && git name-rev --tags --name-only $(git rev-parse HEAD)`" == "$GIT_TAG" ]]; then
-  echo "  -- Already on ${GIT_REPO_DIR} (${GIT_TAG})" >&3
+  echo "  -- Already on ${GIT_REPO_DIR} (${GIT_TAG})"
 
 else
-  echo "  -- Updating ${GIT_REPO_DIR} (${GIT_TAG})" >&3
+  echo "  -- Updating ${GIT_REPO_DIR} (${GIT_TAG})"
   su $GIT_OWNER -c "(cd ${GIT_REPO_DIR} && git checkout . && git fetch && git checkout ${GIT_TAG})"
 fi
 
