@@ -32,7 +32,7 @@ fi
 
 if [[ "`which git 2> /dev/null`" == "" ]]; then
   echo "  -- Installing git" >&3
-  if [[ "$OS" == "redhat" ]]; then
+  if [[ "$OS" == "redhat" ]] || [[ "$OS" == "centos" ]]; then
     yum install -y git-core
   else
     apt-get install -y git-core
