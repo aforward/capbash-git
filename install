@@ -21,6 +21,8 @@ GIT_NAME=${GIT_NAME-server}
 
 GIT_REPO_DIR=${GIT_APPS_DIR}/${GIT_REPO_NAME}
 
+LOGLEVEL=${LOGLEVEL-1}
+
 #-----------
 # Install Script
 #-----------
