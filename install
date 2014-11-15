@@ -71,7 +71,7 @@ elif [[ "$GIT_FORCE" = true ]]; then
 # BEST EFFORT to update to the latest of the branch
 elif [[ "$GIT_TAG" == "$GIT_BRANCH" ]]; then
   notify "  -- Checking out ${GIT_REPO_DIR} (${GIT_BRANCH})"
-  su $GIT_OWNER -c "(cd ${GIT_REPO_DIR} && git checkout . >> ${GIT_OUTPUT} && git checkout ${GIT_BRANCH} >> ${GIT_OUTPUT} && git pull ${GIT_REMOTE} ${GIT_BRANCH} >> ${GIT_OUTPUT})"
+  su $GIT_OWNER -c "(cd ${GIT_REPO_DIR} && git checkout . >> ${GIT_OUTPUT} && git checkout ${GIT_BRANCH} 2> /dev/null >> ${GIT_OUTPUT} && git pull ${GIT_REMOTE} ${GIT_BRANCH} 2> /dev/null >> ${GIT_OUTPUT})"
   debug_all ${GIT_OUTPUT}
 
 # ALEADY ON TAG, NOTHING TO DO
