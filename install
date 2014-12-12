@@ -66,9 +66,9 @@ if [[ ! -e ${GIT_REPO_DIR} ]]; then
   notify "  -- Creating a new REPO ${GIT_REPO_DIR} (${GIT_BRANCH})..."
   # TODO: Andrew was able to get bash to only run 'su' if the user was difference
   if [[ "$GIT_OWNER" == "$USER" ]]; then
-    (cd ${GIT_APPS_DIR} && GIT_ERRORS=$(git clone ${GIT_URL} ${GIT_REPO_NAME} 2>&1 > ${GIT_OUTPUT}))
+    (cd ${GIT_APPS_DIR} && GIT_ERRORS=$(git clone ${GIT_URL} ${GIT_REPO_NAME} > ${GIT_OUTPUT} 2>&1))
     debug_all ${GIT_OUTPUT}
-    (cd ${GIT_APPS_DIR}/${GIT_REPO_NAME} && git checkout ${GIT_TAG} 2> /dev/null > ${GIT_OUTPUT})
+    (cd ${GIT_APPS_DIR}/${GIT_REPO_NAME} && git checkout ${GIT_TAG} > ${GIT_OUTPUT} 2> /dev/null)
   else
     su $GIT_OWNER -c "(cd ${GIT_APPS_DIR} && git clone ${GIT_URL} ${GIT_REPO_NAME} >> ${GIT_OUTPUT} && cd ${GIT_REPO_NAME} && git checkout ${GIT_TAG} >> ${GIT_OUTPUT})"
   fi
