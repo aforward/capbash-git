@@ -28,8 +28,8 @@ LOGLEVEL=${LOGLEVEL-1}
 #-----------
 
 if [[ $LOGLEVEL -le $DEBUG_LEVEL ]]; then
-  ./submodules/bootstrap/mkdir GIT_LOG_DIR
-  GIT_OUTPUT=${GIT_LOG_DIR}/${GIT_REPO_NAME}.log
+  OWNER=$GIT_OWNER ./submodules/bootstrap/mkdir GIT_LOG_DIR
+  OWNER=$GIT_OWNER ./submodules/bootstrap/touch ${GIT_LOG_DIR}/${GIT_REPO_NAME}.log
   echo "" > $GIT_OUTPUT
 else
   GIT_OUTPUT=/dev/null
@@ -55,10 +55,9 @@ if [[ "`git config --global user.email`" == "" ]]; then
   debug "  -- git config --global user.name \"$GIT_NAME\""
 fi
 
-if [[ "$GIT_OWNER" == "$USER" ]]; then
+if [[ ! -e $GIT_APPS_DIR ]]; then
   ./submodules/bootstrap/mkdir GIT_APPS_DIR
-else
-  su $GIT_OWNER -c "mkdir -p $GIT_APPS_DIR"
+  [[ "$GIT_OWNER" != "$USER" ]] && chown -R $GIT_OWNER $GIT_APPS_DIR
 fi
 
 # NEW repository, so clone it
