@@ -7,7 +7,7 @@ set -euo pipefail ; IFS=$'\n\t'
 #-----------
 
 export GIT_LOG_DIR=${GIT_LOG_DIR-/var/log}
-GIT_APPS_DIR=${GIT_APPS_DIR-/var/local/apps}
+export GIT_APPS_DIR=${GIT_APPS_DIR-/var/local/apps}
 GIT_REPO_NAME=${GIT_REPO_NAME-samplephp}
 GIT_URL=${GIT_URL-https://github.com/aforward/samplephp}
 GIT_REMOTE=${GIT_REMOTE-origin}
