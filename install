@@ -30,6 +30,7 @@ LOGLEVEL=${LOGLEVEL-1}
 if [[ $LOGLEVEL -le $DEBUG_LEVEL ]]; then
   OWNER=$GIT_OWNER ./submodules/bootstrap/mkdir GIT_LOG_DIR
   OWNER=$GIT_OWNER ./submodules/bootstrap/touch ${GIT_LOG_DIR}/${GIT_REPO_NAME}.log
+  GIT_OUTPUT=${GIT_LOG_DIR}/${GIT_REPO_NAME}.log
   echo "" > $GIT_OUTPUT
 else
   GIT_OUTPUT=/dev/null
