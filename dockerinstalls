@@ -1,0 +1,35 @@
+#!/bin/bash
+[[ -z "$INFO_LEVEL" ]] && source ./submodules/bootstrap/logging
+set -euo pipefail ; IFS=$'\n\t'
+
+#-----------
+# Configurations
+#-----------
+
+GIT_LOG_DIR=${GIT_LOG_DIR-/var/log}
+GIT_APPS_DIR=${GIT_APPS_DIR-/var/local/apps}
+GIT_BASE_URL=${GIT_URL-git@bitbucket.org:cenx-cf}
+GIT_BRANCH=${GIT_BRANCH-integration}
+
+#-----------
+# Install Script
+#-----------
+
+notify "  -- Cloning projects to $GIT_APPS_DIR"
+rm -rf ${LAUNCHER_DIR}/src/src_new
+mkdir -p ${LAUNCHER_DIR}/src/src_new
+touch ${LAUNCHER_DIR}/src/src_new.gitcommits
+for REPO_NAME in $@
+do
+  GIT_APPS_DIR=$GIT_APPS_DIR GIT_REPO_NAME=$REPO_NAME GIT_URL=$GIT_BASE_URL/$REPO_NAME.git GIT_BRANCH=$GIT_BRANCH \
+    LAUNCHER_DIR=$LAUNCHER_DIR ./submodules/git/dockerinstall
+done
+
+if [[ `cat ${LAUNCHER_DIR}/src/src_new.gitcommits 2> /dev/null` != `cat ${LAUNCHER_DIR}/src/src.gitcommits 2> /dev/null` ]] ; then
+  notify "  -- Source projects changed, creating a new ${LAUNCHER_DIR}/src/src.tar.gz"
+  (cd ${LAUNCHER_DIR}/src && mv src_new src && tar zcf src.tar.gz src/ && rm -rf src)
+else
+  debug "  -- No change to source projects (keeping ${LAUNCHER_DIR}/src/src.tar.gz as-is)"
+  rm -rf ${LAUNCHER_DIR}/src/src_new
+fi
+mv ${LAUNCHER_DIR}/src/src_new.gitcommits ${LAUNCHER_DIR}/src/src.gitcommits
