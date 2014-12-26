@@ -63,7 +63,8 @@ if [[ ! -e ${GIT_REPO_DIR} ]]; then
   # TODO: Andrew was able to get bash to only run 'su' if the user was difference
   if [[ "$GIT_OWNER" == "$USER" ]]; then
     (cd ${GIT_APPS_DIR} && GIT_ERRORS=$(git clone ${GIT_URL} ${GIT_REPO_NAME} > ${GIT_OUTPUT} 2>&1))
-    ERROR="Unable to clone $GIT_REPO_NAME from $GIT_URL due to ..." ./submodules/bootstrap/failonerrors $? $GIT_OUTPUT
+
+    ERROR="Unable to clone1 $GIT_REPO_NAME from $GIT_URL due to ..." ./submodules/bootstrap/failonerrors $? $GIT_OUTPUT
     [ $? -ne 0 ] && exit 1
     debug_all ${GIT_OUTPUT}
 
