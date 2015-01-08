@@ -1,7 +1,7 @@
 #!/bin/bash
 [[ -z "$INFO_LEVEL" ]] && source ./submodules/bootstrap/logging
 
-GIT_REPO_NAME=$GIT_REPO_NAME GIT_URL=$GIT_URL GIT_BRANCH=$GIT_BRANCH ./submodules/git/install
+GIT_URL=$GIT_URL GIT_REPO_NAME=$GIT_REPO_NAME GIT_URL=$GIT_URL GIT_BRANCH=$GIT_BRANCH ./submodules/git/install
 [ $? -ne 0 ] && exit 1
 (cd ${GIT_APPS_DIR}/$GIT_REPO_NAME && git log -n 1 $GIT_BRANCH --pretty=format:"%H" >> ${LAUNCHER_DIR}/src/src_new.gitcommits)
 debug "  -- Syncing $GIT_REPO_NAME to ${LAUNCHER_DIR}/src/src_new for docker"
