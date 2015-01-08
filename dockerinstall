@@ -3,6 +3,6 @@
 
 GIT_REPO_NAME=$GIT_REPO_NAME GIT_URL=$GIT_URL GIT_BRANCH=$GIT_BRANCH ./submodules/git/install
 [ $? -ne 0 ] && exit 1
-(cd ${GIT_APPS_DIR}/$GIT_REPO_NAME && git log -n 1 integration --pretty=format:"%H" >> ${LAUNCHER_DIR}/src/src_new.gitcommits)
+(cd ${GIT_APPS_DIR}/$GIT_REPO_NAME && git log -n 1 $GIT_BRANCH --pretty=format:"%H" >> ${LAUNCHER_DIR}/src/src_new.gitcommits)
 debug "  -- Syncing $GIT_REPO_NAME to ${LAUNCHER_DIR}/src/src_new for docker"
 rsync -qavzh ${GIT_APPS_DIR}/$GIT_REPO_NAME ${LAUNCHER_DIR}/src/src_new/ --exclude ".svn" --exclude ".git"
