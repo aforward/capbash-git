@@ -53,8 +53,7 @@ if [[ "`git config --global user.email`" == "" ]]; then
 fi
 
 if [[ ! -e $GIT_APPS_DIR ]]; then
-  ./submodules/bootstrap/mkdir GIT_APPS_DIR
-  [[ "$GIT_OWNER" != "$USER" ]] && chown -R $GIT_OWNER $GIT_APPS_DIR
+  OWNER=$GIT_OWNER ./submodules/bootstrap/mkdir GIT_APPS_DIR
 fi
 
 # NEW repository, so clone it
