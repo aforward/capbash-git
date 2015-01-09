@@ -126,4 +126,3 @@ else
   su $GIT_OWNER -c "(cd ${GIT_REPO_DIR} && git checkout . > ${GIT_OUTPUT} && git fetch >> ${GIT_OUTPUT} && git checkout ${GIT_TAG} >> ${GIT_OUTPUT})"
   debug_all ${GIT_OUTPUT}
 fi
-
