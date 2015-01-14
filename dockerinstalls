@@ -16,7 +16,7 @@ GIT_CHECK_CHECKSUM=${GIT_CHECK_CHECKSUM-true}
 # Install Script
 #-----------
 
-notify "  -- Cloning projects to $GIT_APPS_DIR"
+debug "  -- Cloning projects to $GIT_APPS_DIR"
 
 if [[ "$GIT_RESET_CHECKSUM" == "true" ]]; then
   debug "Resetting git checkout ${LAUNCHER_DIR}/src/src_new.gitcommits"
