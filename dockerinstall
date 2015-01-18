@@ -1,7 +1,7 @@
 #!/bin/bash
-[[ -z "$INFO_LEVEL" ]] && source ./submodules/bootstrap/logging
+[[ -z "$INFO_LEVEL" ]] && source ./bits/bootstrap/logging
 
-GIT_URL=$GIT_URL GIT_REPO_NAME=$GIT_REPO_NAME GIT_URL=$GIT_URL GIT_BRANCH=$GIT_BRANCH ./submodules/git/install
+GIT_URL=$GIT_URL GIT_REPO_NAME=$GIT_REPO_NAME GIT_URL=$GIT_URL GIT_BRANCH=$GIT_BRANCH ./bits/git/install
 [ $? -ne 0 ] && exit 1
 
 if [[ "$GIT_MODE" != "handsoff" ]]; then

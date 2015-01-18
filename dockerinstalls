@@ -1,5 +1,5 @@
 #!/bin/bash
-[[ -z "$INFO_LEVEL" ]] && source ./submodules/bootstrap/logging
+[[ -z "$INFO_LEVEL" ]] && source ./bits/bootstrap/logging
 
 #-----------
 # Configurations
@@ -30,7 +30,7 @@ for REPO_NAME in $@
 do
   if [[ "$ERROR" == "false" ]]; then
     GIT_APPS_DIR=$GIT_APPS_DIR GIT_REPO_NAME=$REPO_NAME GIT_URL=$GIT_BASE_URL/$REPO_NAME.git GIT_BRANCH=$GIT_BRANCH \
-      LAUNCHER_DIR=$LAUNCHER_DIR ./submodules/git/dockerinstall
+      LAUNCHER_DIR=$LAUNCHER_DIR ./bits/git/dockerinstall
     [ $? -ne 0 ] && ERROR=true
   fi
 done
