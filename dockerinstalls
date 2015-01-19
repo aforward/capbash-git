@@ -37,7 +37,7 @@ done
 [ "$ERROR" == "true" ] && exit 1
 
 if [[ "$GIT_CHECK_CHECKSUM" == "true" ]]; then
-  if [[ "$GIT_MODE" == "handsoff" ]]; then
+  if [[ "$GIT_MODE" == "handsoff" ]] && [[ -e "${LAUNCHER_DIR}/src/src.tar.gz" ]]; then
     debug "  -- Skipping the checksum check (${LAUNCHER_DIR}/src/src_new.gitcommits)"
   elif [[ `cat ${LAUNCHER_DIR}/src/src_new.gitcommits 2> /dev/null` != `cat ${LAUNCHER_DIR}/src/src.gitcommits 2> /dev/null` ]] ; then
     notify "  -- Source projects changed, creating a new ${LAUNCHER_DIR}/src/src.tar.gz"
