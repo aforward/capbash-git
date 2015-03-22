@@ -5,7 +5,6 @@
 # Configurations
 #-----------
 
-GIT_LOG_DIR=${GIT_LOG_DIR-/var/log}
 GIT_APPS_DIR=${GIT_APPS_DIR-/var/local/apps}
 GIT_BASE_URL=${GIT_BASE_URL-git@bitbucket.org:cenx-cf}
 GIT_BRANCH=${GIT_BRANCH-integration}
