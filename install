@@ -12,8 +12,8 @@ export GIT_APPS_DIR=${GIT_APPS_DIR-/var/local/apps}
 GIT_REPO_NAME=${GIT_REPO_NAME-samplephp}
 GIT_URL=${GIT_URL-https://github.com/aforward/samplephp}
 GIT_REMOTE=${GIT_REMOTE-origin}
-GIT_BRANCH=${GIT_BRANCH-master}
-GIT_TAG=${GIT_TAG-$GIT_BRANCH}
+GIT_TAG=${GIT_TAG-master}
+GIT_BRANCH=${GIT_BRANCH-$GIT_TAG}
 GIT_OWNER=${GIT_OWNER-$USER}
 GIT_MODE=${GIT_MODE-remote}
 
