@@ -12,8 +12,9 @@ export GIT_APPS_DIR=${GIT_APPS_DIR-/var/local/apps}
 GIT_REPO_NAME=${GIT_REPO_NAME-samplephp}
 GIT_URL=${GIT_URL-https://github.com/aforward/samplephp}
 GIT_REMOTE=${GIT_REMOTE-origin}
-GIT_TAG=${GIT_TAG-master}
-GIT_BRANCH=${GIT_BRANCH-$GIT_TAG}
+GIT_CHECKOUT_MODE=`if [ -z "$GIT_TAG" ]; then echo "branch"; else echo "tag"; fi`
+GIT_BRANCH=${GIT_BRANCH-master}
+GIT_TAG=${GIT_TAG-$GIT_BRANCH}
 GIT_OWNER=${GIT_OWNER-$USER}
 GIT_MODE=${GIT_MODE-remote}
 
@@ -79,6 +80,7 @@ if [[ ! -e ${GIT_REPO_DIR} ]]; then
     ERROR="Unable to checkout $GIT_TAG from $GIT_REPO_NAME due to ..." ./bits/bootstrap/failonerrors $? $GIT_OUTPUT
     [ $? -ne 0 ] && exit 1
   fi
+  debug "  -- DONE, Creating a new REPO ${GIT_REPO_DIR} (${GIT_BRANCH})"
 
 # HANDSOFF won't touch your code
 elif [[ "$GIT_MODE" = handsoff ]]; then
@@ -86,9 +88,22 @@ elif [[ "$GIT_MODE" = handsoff ]]; then
 
 # FORCE an update, this will force Docker to skip the cache (not necessarily a good thing)
 elif [[ "$GIT_MODE" = "force" ]]; then
-  notify "  -- Forcing a reset to ${GIT_REPO_DIR} (${GIT_BRANCH})"
-  su $GIT_OWNER -c "(cd ${GIT_REPO_DIR} && git fetch && git checkout ${GIT_BRANCH} 2> /dev/null > ${GIT_OUTPUT} && git fetch >> ${GIT_OUTPUT} && git reset --hard ${GIT_REMOTE}/${GIT_BRANCH} >> ${GIT_OUTPUT} && git checkout ${GIT_TAG} 2> /dev/null >> ${GIT_OUTPUT})"
-  debug_all ${GIT_OUTPUT}
+
+  if [[ "$GIT_CHECKOUT_MODE" = "tag" ]]; then
+    notify "  -- Forcing a checkout to ${GIT_REPO_DIR} (${GIT_BRANCH}, tag $GIT_TAG)"
+    su $GIT_OWNER -c "(cd ${GIT_REPO_DIR} && \\
+                          git reset --hard HEAD > ${GIT_OUTPUT} 2>&1 && \\
+                          git fetch 2> /dev/null >> ${GIT_OUTPUT} 2>&1 && \\
+                          git checkout $GIT_BRANCH >> ${GIT_OUTPUT} 2>&1 && \\
+                          git merge 2> /dev/null >> ${GIT_OUTPUT} 2>&1 && \\
+                          git checkout tags/$GIT_TAG >> ${GIT_OUTPUT} 2>&1)"
+    debug_all ${GIT_OUTPUT}
+  else
+    notify "  -- Forcing a reset to ${GIT_REPO_DIR} (${GIT_BRANCH})"
+    su $GIT_OWNER -c "(cd ${GIT_REPO_DIR} && git fetch && git checkout ${GIT_BRANCH} 2> /dev/null > ${GIT_OUTPUT} && git fetch >> ${GIT_OUTPUT} && git reset --hard ${GIT_REMOTE}/${GIT_BRANCH} >> ${GIT_OUTPUT} && git checkout ${GIT_TAG} 2> /dev/null >> ${GIT_OUTPUT})"
+    debug_all ${GIT_OUTPUT}
+  fi
+
 
 # BEST EFFORT to update to the latest of the branch
 elif [[ "$GIT_TAG" == "$GIT_BRANCH" ]]; then
