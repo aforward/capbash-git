@@ -95,7 +95,7 @@ elif [[ "$GIT_MODE" = "force" ]]; then
                           git reset --hard HEAD > ${GIT_OUTPUT} 2>&1 && \\
                           git fetch 2> /dev/null >> ${GIT_OUTPUT} 2>&1 && \\
                           git checkout $GIT_BRANCH >> ${GIT_OUTPUT} 2>&1 && \\
-                          git merge 2> /dev/null >> ${GIT_OUTPUT} 2>&1 && \\
+                          git merge origin $GIT_BRANCH 2> /dev/null >> ${GIT_OUTPUT} 2>&1 && \\
                           git checkout tags/$GIT_TAG >> ${GIT_OUTPUT} 2>&1)"
     debug_all ${GIT_OUTPUT}
   else
