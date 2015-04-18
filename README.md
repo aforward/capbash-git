@@ -6,10 +6,10 @@ Scripts for installing [git](http://git-scm.com/) and cloning a repository.
 # How to Install #
 
 Install capbash first, more details at:
-https://github.com/aforward/capbash
+https://github.com/capbash/capbash
 
 ```
-curl -s https://raw.githubusercontent.com/aforward/capbash/master/capbash-installer | bash
+curl -s https://raw.githubusercontent.com/capbash/capbash/master/capbash-installer | bash
 capbash new YOUR_REPO_ROOT
 cd YOUR_REPO_ROOT
 ```
@@ -27,7 +27,7 @@ The available configurations include:
 ```
 GIT_APPS_DIR=${GIT_HOME-/var/local/apps}
 GIT_REPO_NAME=${GIT_PROJECT_NAME-samplephp}
-GIT_URL=${GIT_URL-https://github.com/aforward/samplephp}
+GIT_URL=${GIT_URL-https://github.com/capbash/samplephp}
 GIT_REMOTE=${PHPAPP_REMOTE-origin}
 GIT_BRANCH=${PHPAPP_BRANCH-master}
 ```
