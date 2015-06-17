@@ -91,12 +91,22 @@ elif [[ "$GIT_MODE" = "force" ]]; then
 
   if [[ "$GIT_CHECKOUT_MODE" = "tag" ]]; then
     notify "  -- Forcing a checkout to ${GIT_REPO_DIR} (${GIT_BRANCH}, tag $GIT_TAG)"
-    su $GIT_OWNER -c "(cd ${GIT_REPO_DIR} && \\
-                          git reset --hard HEAD > ${GIT_OUTPUT} 2>&1 && \\
-                          git fetch 2> /dev/null >> ${GIT_OUTPUT} 2>&1 && \\
-                          git checkout $GIT_BRANCH >> ${GIT_OUTPUT} 2>&1 && \\
-                          git merge origin $GIT_BRANCH 2> /dev/null >> ${GIT_OUTPUT} 2>&1 && \\
-                          git checkout tags/$GIT_TAG >> ${GIT_OUTPUT} 2>&1)"
+
+    if [[ "$GIT_OWNER" == "$USER" ]]; then
+      (cd ${GIT_REPO_DIR} && \
+       git reset --hard HEAD > ${GIT_OUTPUT} 2>&1 && \
+       git fetch 2> /dev/null >> ${GIT_OUTPUT} 2>&1 && \
+       git checkout $GIT_BRANCH >> ${GIT_OUTPUT} 2>&1 && \
+       git merge origin $GIT_BRANCH 2> /dev/null >> ${GIT_OUTPUT} 2>&1 && \
+       git checkout tags/$GIT_TAG >> ${GIT_OUTPUT} 2>&1)
+    else
+      su $GIT_OWNER -c "(cd ${GIT_REPO_DIR} && \\
+                            git reset --hard HEAD > ${GIT_OUTPUT} 2>&1 && \\
+                            git fetch 2> /dev/null >> ${GIT_OUTPUT} 2>&1 && \\
+                            git checkout $GIT_BRANCH >> ${GIT_OUTPUT} 2>&1 && \\
+                            git merge origin $GIT_BRANCH 2> /dev/null >> ${GIT_OUTPUT} 2>&1 && \\
+                            git checkout tags/$GIT_TAG >> ${GIT_OUTPUT} 2>&1)"
+    fi
     debug_all ${GIT_OUTPUT}
   else
     notify "  -- Forcing a reset to ${GIT_REPO_DIR} (${GIT_BRANCH})"
